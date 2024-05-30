@@ -3,11 +3,18 @@ import questionLogo from '../assets/questionLogo.png'
 import valueLogo from '../assets/valueLogo.png';
 import refresh from '../assets/refresh.jpeg';
 import Editor from '@monaco-editor/react';
-
+import { useState } from 'react';
+import NavBar from './navbar';
 export default function Playground()
 {
+  const [language, setLanguage] = useState('python');
+  const handleLanguageChange = (e) => {
+    setLanguage(e.target.value);
+  }
   return (
-    <div className={styles.playGround}>
+    <>
+    <NavBar />
+      <div className={styles.playGround}>
       <div className={styles.questionArea}>
         <div className={styles.sideBar}>
           <img src = {questionLogo} alt = "ques-logo" className={styles.logo}/>
@@ -26,14 +33,16 @@ export default function Playground()
       <div className={styles.solutionArea}>
         <div className={styles.monacoEditor}>
             <div className={styles.solutionAreaPart1}>
-              <select name="language-selection" id="langSelection" className={styles.langSelect}>
-                <option value="python">Python</option>
-                <option value="c++">C++</option>
+              <select name="language-selection"  value={language} onChange={handleLanguageChange} className={styles.langSelect}>
+                <option value="python">Python (3.11.4)</option>
+                <option value="c++">C++ (GCC 9.2.0)</option>
+                <option value="javascript">JavaScript (Node.js 18.15.0)</option>
+                <option value="java">Java (OpenJDK 13.0.1)</option>
               </select>
               <img src = {refresh} alt = "reset code" className={styles.refreshBtn}/>
             </div>
             <div className={styles.solutionAreaPart2}>
-              <Editor height = "60vh" width = "100%" defaultLanguage = "python" theme = "vs-dark"/>
+              <Editor height = "60vh" width = "100%" language={language} theme = "vs-dark"/>
             </div>
         </div>
         <div className={styles.resultArea}>
@@ -50,5 +59,6 @@ export default function Playground()
         </div>
       </div>
     </div>
+    </>
   )
 }
